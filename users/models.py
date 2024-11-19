@@ -37,7 +37,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=100)
     email = models.CharField(max_length=100, unique=True)
     username = models.CharField(max_length=100, unique=True)
-    command = models.ForeignKey('main.Command', on_delete=models.CASCADE, null=True, blank=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
