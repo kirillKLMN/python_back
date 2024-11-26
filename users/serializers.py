@@ -8,7 +8,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={'input_type': 'password'}, write_only=True)
     class Meta:
         model = get_user_model()
-        fields = ['username', 'first_name', 'last_name', 'email', 'password', 'password2']
+        fields = ['username', 'first_name', 'last_name', 'password', 'password2']
         extra_kwargs = {
             'password': {'write_only': True}
         }
@@ -21,7 +21,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         user = get_user_model().objects.create_user(
             username=validated_data['username'],
-            email=validated_data['email'],
             password=validated_data['password'],
             first_name=validated_data['first_name'],
             last_name=validated_data['last_name']
@@ -39,8 +38,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         user = (
-            get_user_model().objects.filter(email=attrs.get("username")).first()
-            or get_user_model().objects.filter(username=attrs.get("username")).first()
+            get_user_model().objects.filter(username=attrs.get("username")).first()
         )
         if user:
             if user.check_password(attrs.get("password")):
@@ -49,5 +47,5 @@ class LoginSerializer(serializers.ModelSerializer):
             if not user.is_active:
                 raise AuthenticationFailed("Аккаунт отключен, обратитесь в поддержку.")
 
-        raise AuthenticationFailed("Не правильные данные.")
+        raise AuthenticationFailed("Неверные данные.")
 
