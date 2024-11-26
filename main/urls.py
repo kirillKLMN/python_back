@@ -2,5 +2,5 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('commands/', views.CommandList.as_view()),
+    path('commands/', views.CommandAPIView.as_view()),
 ]

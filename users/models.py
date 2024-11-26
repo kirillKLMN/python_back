@@ -4,34 +4,42 @@ from django.db import models
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, email, username, password=None, **extra_fields):
+    def create_user(self, email, username, password=None, first_name=None, last_name=None, **extra_fields):
         if username is None:
-            raise ValueError('Users must have username')
+            raise ValueError('Users must have a username')
         if email is None:
-            raise ValueError('Users must have email')
+            raise ValueError('Users must have an email')
         if password is None:
-            raise ValueError('Users must have password')
+            raise ValueError('Users must have a password')
+        if first_name is None:
+            raise ValueError('Users must have a first name')
+        if last_name is None:
+            raise ValueError('Users must have a last name')
+
         user = self.model(
             email=self.normalize_email(email),
             username=username,
+            first_name=first_name,
+            last_name=last_name,
             **extra_fields
-
         )
         user.set_password(password)
         user.save()
         return user
-    def create_superuser(self, email, username, password, **extra_fields):
+
+    def create_superuser(self, email, username, password, first_name=None, last_name=None, **extra_fields):
         user = self.create_user(
-            email,
-            username,
-            password,
+            email=email,
+            username=username,
+            password=password,
+            first_name=first_name,
+            last_name=last_name,
             is_superuser=True,
             is_staff=True,
             **extra_fields
         )
         user.save()
         return user
-
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
