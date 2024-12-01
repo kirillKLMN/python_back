@@ -27,7 +27,7 @@ class Task(models.Model):
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     command = models.ForeignKey(Command, on_delete=models.CASCADE)
     is_complete = models.BooleanField(default=False)
-    status = models.IntegerField(default = 0, max_length=10, choices= STATUS_CHOICES)
+    status = models.CharField(default = 'Нужно сделать', max_length=20, choices= STATUS_CHOICES)
 
 
 
