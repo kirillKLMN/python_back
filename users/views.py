@@ -5,7 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from rest_framework.generics import GenericAPIView, RetrieveUpdateAPIView, RetrieveAPIView, UpdateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from .serializers import UserRegistrationSerializer, LoginSerializer, UserSerializer, TokenSerializer
+from .serializers import UserRegistrationSerializer, LoginSerializer, UserSerializer
 
 
 class UserRegistrationView(GenericAPIView):
@@ -37,15 +37,12 @@ class LoginAPIView(generics.GenericAPIView):
         user = request.data #полученные данные для входа
         serializer = self.serializer_class(data=user) #эти данные прогоняем через сериализатор
         if serializer.is_valid(raise_exception=True):
-            user = get_user_model().objects.filter(username=serializer.data.get("username")).first()
-            Token.objects.filter(user=user).delete()
-            token = Token.objects.create(user=user)
-            return Response({'Token': f'Token {token.key}'}, status=status.HTTP_200_OK)
+            print(serializer.data)
+            return Response({'tokens': serializer.data['tokens']}, status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class InfoAPIView(GenericAPIView):
-    serializer_class = TokenSerializer
     def post(self, request):
         token = request.data
         serializer = self.serializer_class(data=token)  # эти данные прогоняем через сериализатор
