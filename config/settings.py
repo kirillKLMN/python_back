@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
 SWAGGER_SETTINGS = {
     'LOGIN_URL': '/users/login/',
     'LOGOUT_URL': '/users/logout/',
-    'PERSIST_AUTH': True,
+    'PERSIST_AUTH': False,
     "USE_SESSION_AUTH": False,
     "REFETCH_SCHEMA_WITH_AUTH": True,
     'SECURITY_DEFINITIONS': {
@@ -162,7 +162,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5) if not DEBUG else timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "ROTATE_REFRESH_TOKENS": False,
     "BLACKLIST_AFTER_ROTATION": False,

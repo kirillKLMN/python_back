@@ -14,20 +14,23 @@ class Command(models.Model):
 
 class Task(models.Model):
     STATUS_CHOICES = (
-        (0, 'Нужно сделать'),
-        (1, 'В работе'),
-        (2, 'Сделано'),
-        (3, 'Доработать'),
-        (4, 'Другое'),
+        ('Нужно сделать', 'Нужно сделать'),
+        ('В работе', 'В работе'),
+        ('Сделано', 'Сделано'),
+        ('Доработать', 'Доработать'),
+        ('Другое', 'Другое'),
+    )
+    PRIORITY_CHOICES = (
+
     )
     title = models.CharField(max_length=100)
     description = models.TextField()
-    date_start = models.DateField()
     date_end = models.DateField()
     author = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     command = models.ForeignKey(Command, on_delete=models.CASCADE)
     is_complete = models.BooleanField(default=False)
     status = models.CharField(default = 'Нужно сделать', max_length=20, choices= STATUS_CHOICES)
+    priority = models.CharField(default='Низкий', max_length=20, choices=PRIORITY_CHOICES)
 
 
 
